@@ -3,7 +3,7 @@
 RAG app using:
 - OpenAI embeddings + OpenAI chat model
 - ChromaDB (vector DB)
-- FastAPI + Gradio UI
+- Gradio UI
 
 ## 1) Activate env
 ```bash
@@ -35,12 +35,3 @@ cd /Users/sureshcheppalli/Projects/GenAIRAG
 .venv/bin/python gradio_app.py
 ```
 Open: `http://127.0.0.1:7860`
-
-## 7) Run FastAPI
-```bash
-cd /Users/sureshcheppalli/Projects/GenAIRAG
-COLLECTION=agentic_pdf_docs_openai .venv/bin/python -m uvicorn api_server:app --host 127.0.0.1 --port 8000
-```
-
-- JSON endpoint: `POST /ask`
-- Text endpoint: `GET/POST /ask-text`
