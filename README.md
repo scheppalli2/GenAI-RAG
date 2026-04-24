@@ -1,8 +1,9 @@
 # GenAIRAG
 
-Minimal local RAG starter using:
+RAG app using:
+- OpenAI embeddings + OpenAI chat model
 - ChromaDB (vector DB)
-- Ollama (embeddings + local SLM)
+- FastAPI + Gradio UI
 
 ## 1) Activate env
 ```bash
@@ -10,42 +11,36 @@ cd /Users/sureshcheppalli/Projects/GenAIRAG
 source .venv/bin/activate
 ```
 
-## 2) Start Ollama (project-local)
-```bash
-HOME=/Users/sureshcheppalli/Projects/GenAIRAG/.home \
-OLLAMA_MODELS=/Users/sureshcheppalli/Projects/GenAIRAG/.ollama/models \
-/Users/sureshcheppalli/Projects/GenAIRAG/tools/ollama serve
-```
+## 2) Ensure OpenAI key exists
+`rag_app.py` loads API key from `../MITWork/.env` (`OPENAI_API_KEY` or `OPENAI_KEY`).
 
-## 3) Pull models (once)
-```bash
-HOME=/Users/sureshcheppalli/Projects/GenAIRAG/.home \
-OLLAMA_MODELS=/Users/sureshcheppalli/Projects/GenAIRAG/.ollama/models \
-OLLAMA_HOST=http://127.0.0.1:11434 \
-/Users/sureshcheppalli/Projects/GenAIRAG/tools/ollama pull nomic-embed-text
-
-HOME=/Users/sureshcheppalli/Projects/GenAIRAG/.home \
-OLLAMA_MODELS=/Users/sureshcheppalli/Projects/GenAIRAG/.ollama/models \
-OLLAMA_HOST=http://127.0.0.1:11434 \
-/Users/sureshcheppalli/Projects/GenAIRAG/tools/ollama pull qwen2.5:3b
-```
-
-## 4) Add documents
+## 3) Add documents
 Put `.txt` files under `data/`.
 
-## 5) Ingest docs
+## 4) Ingest docs
 ```bash
 cd /Users/sureshcheppalli/Projects/GenAIRAG
-OLLAMA_HOST=http://127.0.0.1:11434 .venv/bin/python rag_app.py ingest --folder ./data
+COLLECTION=agentic_pdf_docs_openai .venv/bin/python rag_app.py ingest --folder ./data
 ```
 
-## 6) Ask questions
+## 5) Ask questions (CLI)
 ```bash
 cd /Users/sureshcheppalli/Projects/GenAIRAG
-OLLAMA_HOST=http://127.0.0.1:11434 .venv/bin/python rag_app.py ask --question "What are the key points?"
+COLLECTION=agentic_pdf_docs_openai .venv/bin/python rag_app.py ask --question "What are the key points?" --k 10
 ```
 
-## Optional model override
+## 6) Run Gradio UI
 ```bash
-CHAT_MODEL=llama3.2:3b OLLAMA_HOST=http://127.0.0.1:11434 .venv/bin/python rag_app.py ask --question "..."
+cd /Users/sureshcheppalli/Projects/GenAIRAG
+.venv/bin/python gradio_app.py
 ```
+Open: `http://127.0.0.1:7860`
+
+## 7) Run FastAPI
+```bash
+cd /Users/sureshcheppalli/Projects/GenAIRAG
+COLLECTION=agentic_pdf_docs_openai .venv/bin/python -m uvicorn api_server:app --host 127.0.0.1 --port 8000
+```
+
+- JSON endpoint: `POST /ask`
+- Text endpoint: `GET/POST /ask-text`
