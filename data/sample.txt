@@ -1,0 +1,4 @@
+Retrieval-Augmented Generation (RAG) combines retrieval with generation.
+A vector database stores embeddings for document chunks.
+At query time, relevant chunks are retrieved and sent as context to the language model.
+This improves factual grounding and reduces hallucinations.

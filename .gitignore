@@ -1,0 +1,9 @@
+.env
+.venv/
+.home/
+.ollama/
+chroma_db/
+tools/
+__pycache__/
+*.pyc
+openapi_live.json
